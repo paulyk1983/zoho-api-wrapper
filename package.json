@@ -1,0 +1,22 @@
+{
+  "name": "zoho-api-wrapper",
+  "version": "1.0.0",
+  "description": "a wrapper for connecting zoho api to website ajax requests",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulyk1983/zoho-api-wrapper.git"
+  },
+  "author": "Paul Krajewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulyk1983/zoho-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/paulyk1983/zoho-api-wrapper#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
