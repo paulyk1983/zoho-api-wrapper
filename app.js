@@ -1,27 +1,41 @@
-// const http = require('http');
+const express = require('express');
+const fs = require('fs');
 
-// const hostname = '127.0.0.1';
-// const port = 3000;
+const logger = require('./config/winston');
+// Set up mongoose connection
+if (process.env.NODE_ENV !== 'production') {
+  /* eslint-disable global-require */
+  require('dotenv').load();
+  /* eslint-enable global-require */
+}
+const app = express();
+const processport = process.env.PORT;
+const cache = apicache.middleware;
 
-// const server = http.createServer((req, res) => {
-//   res.statusCode = 200;
-//   res.setHeader('Content-Type', 'text/plain');
-//   res.end('Hello World\n');
-// });
 
-// server.listen(port, hostname, () => {
-//   console.log(`Server running at http://${hostname}:${port}/`);
-// });
+app.use(require('morgan')('combined', { stream: logger.stream }));
 
-var express = require("express");
-var bodyParser = require("body-parser");
-var app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use((err, req, res, next) => {
+  logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
-var routes = require("./routes/routes.js")(app);
+  res.status(err.status || 500);
 
-var server = app.listen(3000, function () {
-    console.log("Listening on port %s...", server.address().port);
+  res.render('error');
+});
+
+app.listen(processport, () => {
+  logger.info(`Process up at port ${processport}`);
+});
+
+app.all('/pid', (req, res) => {
+  res.end(`process ${process.pid} says hello!`);
+});
+
+
+
+app.get('/locations', (req,res) => {
+  const data = fs.readFileSync('mocks/store-locator.json', 'utf8');
+  const contents = JSON.parse(data);
+  res.json(contents).status(200);
 });

@@ -4,7 +4,7 @@
   "description": "a wrapper for connecting zoho api to website ajax requests",
   "main": "app.js",
   "scripts": {
-    "test": "test"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/paulyk1983/zoho-api-wrapper#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "apicache": "^1.2.3",
+    "app-root-path": "^2.1.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.10.6",
+    "morgan": "^1.9.1",
+    "winston": "^3.1.0",
+    "winston-splunk-httplogger": "^1.2.2"
   }
 }
