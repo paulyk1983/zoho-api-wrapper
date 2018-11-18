@@ -1,5 +1,4 @@
 const express = require('express');
-const fs = require('fs');
 
 const logger = require('./config/winston');
 // Set up mongoose connection
@@ -10,7 +9,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const app = express();
 const processport = process.env.PORT;
-const cache = apicache.middleware;
 
 
 app.use(require('morgan')('combined', { stream: logger.stream }));
@@ -24,18 +22,8 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
+var routes = require("./routes/routes.js")(app);
+
 app.listen(processport, () => {
   logger.info(`Process up at port ${processport}`);
-});
-
-app.all('/pid', (req, res) => {
-  res.end(`process ${process.pid} says hello!`);
-});
-
-
-
-app.get('/locations', (req,res) => {
-  const data = fs.readFileSync('mocks/store-locator.json', 'utf8');
-  const contents = JSON.parse(data);
-  res.json(contents).status(200);
 });
