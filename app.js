@@ -2,11 +2,11 @@ const express = require('express');
 
 // const logger = require('./config/winston');
 // Set up mongoose connection
-if (process.env.NODE_ENV !== 'production') {
-  /* eslint-disable global-require */
-  require('dotenv').load();
-  /* eslint-enable global-require */
-}
+// if (process.env.NODE_ENV !== 'production') {
+//    eslint-disable global-require 
+//   require('dotenv').load();
+//   /* eslint-enable global-require */
+// }
 const app = express();
 const port = process.env.PORT || 1337;
 
