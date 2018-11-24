@@ -8,6 +8,7 @@ const express = require('express');
 //   /* eslint-enable global-require */
 // }
 const app = express();
+var routes = require("./routes/routes.js")(app);
 const port = process.env.PORT || 1337;
 
 
@@ -22,10 +23,8 @@ const port = process.env.PORT || 1337;
 //   res.render('error');
 // });
 
-var routes = require("./routes/routes.js")(app);
 
-app.listen(port, () => {
-  // logger.info(`Process up at port ${processport}`);
-  console.log("Server running at http://localhost:%d", port);
 
-});
+app.listen(port);
+
+console.log("Server running at http://localhost:%d", port);
