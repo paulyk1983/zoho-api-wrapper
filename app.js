@@ -2,13 +2,13 @@ const express = require('express');
 
 // const logger = require('./config/winston');
 // Set up mongoose connection
-// if (process.env.NODE_ENV !== 'production') {
-//    eslint-disable global-require 
-//   require('dotenv').load();
-//   /* eslint-enable global-require */
-// }
+if (process.env.NODE_ENV !== 'production') {
+  /* eslint-disable global-require */
+  require('dotenv').load();
+  /* eslint-enable global-require */
+}
 const app = express();
-const processport = process.env.PORT || 1337;
+const port = process.env.PORT || 1337;
 
 
 // app.use(require('morgan')('combined', { stream: logger.stream }));
@@ -24,6 +24,8 @@ const processport = process.env.PORT || 1337;
 
 var routes = require("./routes/routes.js")(app);
 
-app.listen(processport, () => {
-  logger.info(`Process up at port ${processport}`);
+app.listen(port, () => {
+  // logger.info(`Process up at port ${processport}`);
+  console.log("Server running at http://localhost:%d", port);
+
 });
