@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 
 // const logger = require('./config/winston');
 // Set up mongoose connection
