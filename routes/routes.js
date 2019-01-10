@@ -3,7 +3,7 @@ const fs = require('fs');
 var appRouter = function(app) {
 
   app.get("/", function(req, res) {
-      res.send("Hello World");
+      res.send(process.env.TEST);
   });
 
   // app.all('/pid', (req, res) => {
