@@ -35,7 +35,7 @@ var appRouter = function(app) {
       // .catch(function (error) {
       //   console.log(error);
       // });
-      res.send(access_token);
+      console.log(access_token);
 
     })
     .catch(function (error) {
