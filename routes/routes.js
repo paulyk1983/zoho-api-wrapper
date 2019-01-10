@@ -24,17 +24,18 @@ var appRouter = function(app) {
       const access_token = response.data.access_token;
       
       // get leads
-      axios.get('https://www.zohoapis.com/crm/v2/Leads', {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        }
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      // axios.get('https://www.zohoapis.com/crm/v2/Leads', {
+      //   headers: {
+      //     Authorization: `Bearer ${access_token}`
+      //   }
+      // })
+      // .then(function (response) {
+      //   console.log(response);
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
+      res.send(access_token);
 
     })
     .catch(function (error) {
