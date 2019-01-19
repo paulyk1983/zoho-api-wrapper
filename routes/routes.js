@@ -1,15 +1,21 @@
 const fs = require('fs');
 const axios = require('axios');
 
+// var promise = new Promise(function(resolve, reject) {
+//   // make axios request
+// });
+
 var appRouter = function(app) {
 
   app.get("/", function(req, res) {
       res.send("Hello World");
   });
 
-  // app.all('/pid', (req, res) => {
-  //   res.end(`process ${process.pid} says hello!`);
-  // });
+  var getAccessToken = function() {
+    const url = `https://accounts.zoho.com/oauth/v2/token?refresh_token=${process.env.REFRESH_TOKEN}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=refresh_token`;
+    
+    return axios.post(url);
+  }
 
   app.get('/locations', function(req,res) {
     const data = fs.readFileSync('mocks/store-locator.json', 'utf8');
@@ -19,7 +25,7 @@ var appRouter = function(app) {
 
   app.get('/leads', function(res,req) {
     // get access token
-    axios.post(`https://accounts.zoho.com/oauth/v2/token?refresh_token=${process.env.REFRESH_TOKEN}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=refresh_token`)
+    getAccessToken()
     .then(function (response) {
       const access_token = response.data.access_token;
       
