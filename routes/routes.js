@@ -7,15 +7,22 @@ const axios = require('axios');
 
 var appRouter = function(app) {
 
+  var validateKey = function(req, res) {
+    if (req.headers.api_key != process.env.API_KEY) {
+      res.status(401);
+      res.send();
+    }
+  }
+
   var getAccessToken = function() {
     const url = `https://accounts.zoho.com/oauth/v2/token?refresh_token=${process.env.REFRESH_TOKEN}&client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&grant_type=refresh_token`;
 
     return axios.post(url);
   }
-
+  
 
   app.get("/", function(req, res) {
-      res.send("Hello World");
+    res.send("Hello World");
   });
 
   app.get('/locations', function(req,res) {
@@ -25,7 +32,8 @@ var appRouter = function(app) {
     res.json(contents).status(200);
   });
 
-  app.get('/leads', function(req,res) {
+  app.get('/leads', function(req,res) { 
+    validateKey(req, res);
 
     var getLeads = function(token) {
       return axios.get('https://www.zohoapis.com/crm/v2/Leads', {
