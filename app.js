@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
 // const logger = require('./config/winston');
@@ -9,6 +10,7 @@ require('dotenv').config();
 //   /* eslint-enable global-require */
 // }
 const app = express();
+app.use(bodyParser.json({ extended: false }));
 var routes = require("./routes/routes.js")(app);
 const port = process.env.PORT || 1337;
 
