@@ -71,25 +71,29 @@ var appRouter = function(app) {
 
     // TODO: Investigate Zoho Leads API post method to see which payload needs to be sent in order to accept or deny leads.
     
-    if (req.body.status == "accepted" ) {
-      var status = "Accepted"
-    } else if (req.body.status == "denied") {
-      var status = "Denied"
-    } else if (req.body.status == "pending") {
-      var status = "Pending";
-    } else {
-      console.log("error, status needs to be 'accepted', 'denied' or 'pending'.");
+    if (req.body.status == "approved" ) {
+      var status = "Approved"
+    } else if (req.body.status == "declined") {
+      var status = "Declined"
+    } 
+    else {
+      console.log("error, status needs to be 'approved' or 'declined'.");
       return false;
     }
 
     var updateInquiry = function(token, id) {
+      console.log(`Bearer ${token}`);
       return axios.put('https://www.zohoapis.com/crm/v2/Leads/'+id, {
         headers: {
           Authorization: `Bearer ${token}`
         },
         body: {
-          status: "Accepted"
-          // TODO need to pass in whole object body which means you need to make a GET to /Leads/:id
+          data: [
+            {
+              // NOTE: WITH THE PRESENCE OF THIS BODY IN THIS OBJECT, MAKES THE REQUEST RENDER A 401 FROM ZOHO
+              Status: "Declined"    
+            }
+          ]          
         }
       });
     }
@@ -97,7 +101,7 @@ var appRouter = function(app) {
     getAccessToken()
     .then(function (response) {
       const access_token = response.data.access_token;
-      
+
       updateInquiry(access_token, inquiryId)
       .then(function (response) {
         res.json(response.data).status(200);       
@@ -105,6 +109,7 @@ var appRouter = function(app) {
       .catch(function (error) {
         res.status(500);
         res.send("Error from Zoho API");
+        //console.log(error);
         // TODO: Learn how to parse/interpret errors
       });
 
