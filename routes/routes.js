@@ -54,11 +54,13 @@ var appRouter = function(app) {
         res.json(response.data).status(200);       
       })
       .catch(function (error) {
+        res.send(error.response.data.message);
         console.log(error);
       });
 
     })
     .catch(function (error) {
+      res.send(error.response.data.message);
       console.log(error);
     });
     
@@ -82,7 +84,6 @@ var appRouter = function(app) {
     }
 
     var updateInquiry = function(token, id) {
-      console.log(`Bearer ${token}`);
       return axios.put('https://www.zohoapis.com/crm/v2/Leads/'+id, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -108,8 +109,9 @@ var appRouter = function(app) {
       })
       .catch(function (error) {
         res.status(500);
-        res.send("Error from Zoho API");
-        //console.log(error);
+        console.log(error);
+        res.send(error.response.data.message);
+        
         // TODO: Learn how to parse/interpret errors
       });
 
