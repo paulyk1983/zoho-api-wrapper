@@ -71,6 +71,7 @@ var appRouter = function(app) {
         return false;
       }
     }  
+    // TODO: VALIDATION ALL USED FIELDS IN THE BODY
 
     var updateInquiry = function(token, id) {
       var config = {
