@@ -27,13 +27,6 @@ var appRouter = function(app) {
     res.send("Hello World");
   });
 
-  app.get('/locations', function(req,res) {
-    const data = fs.readFileSync('mocks/store-locator.json', 'utf8');
-    const contents = JSON.parse(data);
-    
-    res.json(contents).status(200);
-  });
-
   app.get('/leads', function(req,res) { 
     validateKey(req, res);
 
@@ -55,14 +48,14 @@ var appRouter = function(app) {
         res.json(response.data).status(200);       
       })
       .catch(function (error) {
-        res.send(error.response.data.message);
         console.log(error);
+        res.send(error.response.data.message);        
       });
 
     })
     .catch(function (error) {
-      res.send(error.response.data.message);
       console.log(error);
+      res.send(error.response.data.message);      
     });
     
   });
@@ -72,23 +65,20 @@ var appRouter = function(app) {
 
     var inquiryId = req.params.id;
     
-    if (req.body.status == "approved" ) {
-      var status = "Approved"
-    } else if (req.body.status == "declined") {
-      var status = "Declined"
-    } 
-    else {
-      res.send("error, status needs to be 'approved' or 'declined'.");
-      return false;
-    }
+    if (req.body.status) {
+      if (req.body.status != "approved" && req.body.status != "declined") {
+        res.send("error, status needs to be 'approved' or 'declined'.");
+        return false;
+      }
+    }  
 
     var updateInquiry = function(token, id) {
       var config = {
         headers: {"Authorization": `Bearer ${token}`}
       }
-      return axios.put('https://www.zohoapis.com/crm/v2/Leads/'+id, {data:[{Status: status}]}, config);
+      var requestBody = {data:[req.body]};
+      return axios.put('https://www.zohoapis.com/crm/v2/Leads/'+id, requestBody, config);
     }
-
 
     getAccessToken()
     .then(function (response) {
