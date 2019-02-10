@@ -71,7 +71,6 @@ var appRouter = function(app) {
         return false;
       }
     }  
-    // TODO: VALIDATION ALL USED FIELDS IN THE BODY
 
     var updateInquiry = function(token, id) {
       var config = {
@@ -90,11 +89,9 @@ var appRouter = function(app) {
         res.json(response.data).status(200);       
       })
       .catch(function (error) {
-        res.status(500);
         console.log(error);
-        res.send(error.response.data.message);
-        
-        // TODO: Learn how to parse/interpret errors
+        res.status(500);        
+        res.send(error.response.data.message);        
       });
 
     })
