@@ -73,8 +73,8 @@ var appRouter = function(app) {
 
     var inquiryId = req.params.id;
     
-    if (req.body.status) {
-      if (req.body.status != "approved" && req.body.status != "declined") {
+    if (req.body.Status) {
+      if (req.body.Status != "approved" && req.body.Status != "declined") {
         res.send("error, status needs to be 'approved' or 'declined'.");
         return false;
       }
