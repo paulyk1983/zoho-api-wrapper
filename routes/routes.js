@@ -22,6 +22,14 @@ var appRouter = function(app) {
     return axios.post(url);
   }
 
+  app.use(function(req, res, next) {
+
+    // FOR CORS POLICY
+    res.header("Access-Control-Allow-Origin", "https://finishlinecorp.com");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, api_key");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+    next();
+  });
 
   app.get("/", function(req, res) {
     res.send("Hello World");
