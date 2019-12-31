@@ -110,6 +110,42 @@ var appRouter = function(app) {
 
   });
 
+  // Process Samples from /samples page -> Adds sample data to Potential 'sample info' field
+  app.patch('/potentials/:id', function(req,res) {
+    validateKey(req, res);
+
+    var potentialId = req.params.id;
+
+    var updatePotential = function(token, id) {
+      var config = {
+        headers: {"Authorization": `Bearer ${token}`}
+      }
+      var requestBody = {data:[req.body]};
+      return axios.put('https://www.zohoapis.com/crm/v2/Potentials/'+id, requestBody, config);
+    }
+
+    getAccessToken()
+    .then(function (response) {
+      const access_token = response.data.access_token;
+
+      updatePotential(access_token, potentialId)
+      .then(function (response) {
+        res.json(response.data).status(200);       
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(500);        
+        res.send(error.response.data.message);        
+      });
+
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.send(error.response.data.message).status(401);
+    });
+
+  });
+
 }
 
 module.exports = appRouter;
