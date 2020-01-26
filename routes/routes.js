@@ -146,6 +146,38 @@ var appRouter = function(app) {
 
   });
 
+  app.get('/products', function(req,res) {
+    validateKey(req, res);
+
+    var getProducts = function(token) {
+      return axios.get('https://www.zohoapis.com/crm/v2/Products', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
+
+    getAccessToken()
+    .then(function (response) {
+      const access_token = response.data.access_token;
+      
+      getProducts(access_token)
+      .then(function (response) {
+        console.log(response);
+        res.json(response.data).status(200);       
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.send(error.response.data.message);        
+      });
+
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.send(error.response.data.message);      
+    });
+  });
+
 }
 
 module.exports = appRouter;
