@@ -85,6 +85,7 @@ var appRouter = function(app) {
         headers: {"Authorization": `Bearer ${token}`}
       }
       var requestBody = {data:[req.body]};
+      
       return axios.put('https://www.zohoapis.com/crm/v2/Leads/'+id, requestBody, config);
     }
 
@@ -121,6 +122,7 @@ var appRouter = function(app) {
         headers: {"Authorization": `Bearer ${token}`}
       }
       var requestBody = {data:[req.body]};
+
       return axios.put('https://www.zohoapis.com/crm/v2/Potentials/'+id, requestBody, config);
     }
 
@@ -190,6 +192,40 @@ var appRouter = function(app) {
     .catch(function (error) {
       console.log(error);
       res.send(error.response.data.message);      
+    });
+  });
+
+  // Will not add product if duplicate name. Instead, it will update existing product.
+  app.post('/products', function(req,res) {
+    validateKey(req, res);
+
+    var addProduct = function(token) {
+      var config = {
+        headers: {"Authorization": `Bearer ${token}`}
+      }
+      var requestBody = {data:[req.body]};
+
+      return axios.post('https://www.zohoapis.com/crm/v2/Products/upsert', requestBody, config);
+    }
+
+    getAccessToken()
+    .then(function (response) {
+      const access_token = response.data.access_token;
+
+      addProduct(access_token)
+      .then(function (response) {
+        res.json(response.data).status(200);      
+      })
+      .catch(function (error) {
+        res.status(500);
+        res.send(error);     
+      });
+
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(401);
+      res.send(error);      
     });
   });
 
