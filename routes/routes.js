@@ -163,7 +163,22 @@ var appRouter = function(app) {
       
       getProducts(access_token)
       .then(function (response) {
-        console.log(response);
+
+        // Sort product resources by product name
+        function compareProductNames(a, b) {
+          const nameA = a.Product_Name;
+          const nameB = b.Product_Name;
+        
+          let comparison = 0;
+          if (nameA > nameB) {
+            comparison = 1;
+          } else if (nameA < nameB) {
+            comparison = -1;
+          }
+          return comparison;
+        }
+        response.data.data.sort(compareProductNames);
+
         res.json(response.data).status(200);       
       })
       .catch(function (error) {
