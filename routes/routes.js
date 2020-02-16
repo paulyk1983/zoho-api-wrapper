@@ -1,10 +1,4 @@
-const fs = require('fs');
 const axios = require('axios');
-
-// var promise = new Promise(function(resolve, reject) {
-//   // make axios request
-// });
-
 
 var appRouter = function(app) {
 
@@ -33,39 +27,6 @@ var appRouter = function(app) {
 
   app.get("/", function(req, res) {
     res.send("Hello World");
-  });
-
-  app.get('/leads', function(req,res) { 
-    validateKey(req, res);
-
-    var getLeads = function(token) {
-      return axios.get('https://www.zohoapis.com/crm/v2/Leads', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-    }
-
-    getAccessToken()
-    .then(function (response) {
-      const access_token = response.data.access_token;
-      
-      getLeads(access_token)
-      .then(function (response) {
-        console.log(response);
-        res.json(response.data).status(200);       
-      })
-      .catch(function (error) {
-        console.log(error);
-        res.send(error.response.data.message);        
-      });
-
-    })
-    .catch(function (error) {
-      console.log(error);
-      res.send(error.response.data.message);      
-    });
-    
   });
 
   app.patch('/inquiries/:id', function(req,res) {
